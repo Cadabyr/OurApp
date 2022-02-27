@@ -5,23 +5,18 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express')
 const app = express()
 const passport = require('passport')
-const initializePassport = require('./passport-config')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 //const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require('body-parser')
+const User = require('./models/user')
+const LocalStrategy = require('passport-local').Strategy
 
 const indexRouter = require('./routes/index')
 const loginRouter = require('./routes/login')
 const registerRouter = require('./routes/register')
 const logoutRouter = require('./routes/logout')
-
-initializePassport(
-    passport, 
-    email => users.find(user => user.email === email),
-    id => users.find(user => user.id === id)
-)
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
@@ -33,8 +28,13 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }))
+
 app.use(passport.initialize())
 app.use(passport.session())
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+passport.use(new LocalStrategy({usernameField: 'email'}, User.authenticate()))
+
 app.use(methodOverride('_method'))
 app.use(express.static('public'))
 //app.use(expressLayouts)

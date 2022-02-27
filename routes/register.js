@@ -1,35 +1,26 @@
 const express = require('express')
 const router = express.Router()
+const passport = require('passport')
 const User = require('../models/user')
-const bcrypt = require('bcrypt')
-const auth = require('../public/javascripts/checkAuthentication')
 
 router.get('/', async (req, res) => {
     try{
-        auth.checkNotAuthenticated
         res.render('register.ejs')
     } catch{
         res.redirect('/register')
     }
 })
 
-
-router.post('/', async (req, res) => {
-    try{
-        auth.checkNotAuthenticated
-        const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        const user = new User({
-            id: Date.now().toString(),
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword
+router.post('/', function(req, res) {
+    User.register(new User({email: req.body.email, name: req.body.name}, ), req.body.password, function(err, user){
+        if(err){
+            console.log(err)
+            return res.render('register.ejs', {user: user})
+        }
+        passport.authenticate('local')(req, res, function(){
+            res.redirect('/login')
         })
-        await user.save()
-        res.redirect('/login')
-    } catch(e) {
-        console.log(e)
-        res.redirect('/register')
-    }
+    })
 })
 
 module.exports = router
