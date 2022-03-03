@@ -8,7 +8,7 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
-//const expressLayouts = require('express-ejs-layouts')
+const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require('body-parser')
 const User = require('./models/user')
 const LocalStrategy = require('passport-local').Strategy
@@ -20,7 +20,7 @@ const logoutRouter = require('./routes/logout')
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
-//app.set('layout', 'layouts/layout')
+app.set('layout', 'layouts/layout')
 app.use(express.json())
 app.use(flash())
 app.use(session({
@@ -37,7 +37,7 @@ passport.use(new LocalStrategy({usernameField: 'email'}, User.authenticate()))
 
 app.use(methodOverride('_method'))
 app.use(express.static('public'))
-//app.use(expressLayouts)
+app.use(expressLayouts)
 app.use(bodyParser.urlencoded({limit: '10mb', extended: false}))
 
 const mongoose = require('mongoose')
