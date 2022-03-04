@@ -1,0 +1,20 @@
+<%- include('../partials/sidenav.ejs') %>
+<div id="main">
+    <h1>Update <%= user.name %>'s Profile</h1>
+    <form action="?_method=PUT" method="POST">
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" value="<%= user.name %>" required>
+        </div>
+
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="<%= user.email %>" required>
+        </div>
+        <div>
+            <label for="profilePicture">Profile Picture</label>
+            <input type="file" name="profilePicture" class="filepond">
+        </div>
+        <button type="submit">Save Profile</button>
+    </form>
+</div>

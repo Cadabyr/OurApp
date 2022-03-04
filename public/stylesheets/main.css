@@ -1,4 +1,10 @@
+@import 'shared/fonts.css';
 @import 'shared/sidenav.css';
+
+:root {
+    font-family: 'Montserrat';
+    font-size: 20px;
+}
 
 body {
     background-color: aqua;

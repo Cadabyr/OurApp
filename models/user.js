@@ -12,6 +12,16 @@ const userSchema = new mongoose.Schema({
     },
     profilePicture: {
         type: Buffer
+    },
+    profilePictureType: {
+        type: String
+    }
+})
+
+userSchema.virtual('profilePicturePath').get(function(){
+    if(this.profilePicture != null && this.profilePictureType != null){
+        return `data:${this.profilePictureType};charset=utf-8;base64,
+        ${this.profilePicture.toString('base64')}`
     }
 })
 

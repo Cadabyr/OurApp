@@ -1,0 +1,13 @@
+<%- include('../partials/sidenav.ejs') %>
+<div id="main">
+    <h1><%= user.name %>'s Profile</h1>
+    <div>E-Mail: <%= user.email %> </div>
+    <br>
+    <div>Profile Picture</div>
+    <img src="<%= user.profilePicturePath %> ">
+        <% if (user.profilePicture == null) { %>
+            <div>You need a picture my friend</div>
+        <% } %> 
+    <br>
+    <button onclick="location.href='/profile/edit'">Edit Profile</button>
+</div>
